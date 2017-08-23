@@ -1,9 +1,11 @@
 doctype html
-- 'style="font-size:80%"'
 html
   head
-    title ブロック構文はいいぞ
+    title= "ブロック構文はいいぞ#{Time.now}"
     meta name="author" content="sxarp" charset="utf-8"
+    meta name="viewport" content="width=device-width initial-scale=1.0 maximum-scale=1.0 user-scalable=no"
+		meta name="apple-mobile-web-app-capable" content="yes"
+		meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"
     link rel="stylesheet" href="css/reveal.css"
     link rel="stylesheet" href="css/theme/sky.css" id="theme"
     link rel="stylesheet" href="lib/css/zenburn.css"
@@ -43,8 +45,8 @@ html
               ul
                 li そろそろmonadが何なのか分かりそう(願望)
         section
-          h2 今日の発表の大まかな流れ
-          p ブロックを受け取る関数を自作すると便利だよという話をします
+          h3 今日の発表の大まかな流れ
+          h4 ブロックを受け取る関数を自作すると便利だよという話をします
           ul
             li
               | ブロック構文の簡単な説明
@@ -69,6 +71,9 @@ html
           p aaaaaa
     script src="lib/js/head.min.js"
     script src="js/reveal.min.js"
+    sass:
+      body
+        line-height: 150%
     javascript:
       Reveal.initialize({
       controls: false,
@@ -85,3 +90,12 @@ html
       { src: 'plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
       { src: 'plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
       ]});
+    sass:
+      section
+        line-height: 140% !important
+        ul
+          font-size: 90% !important
+          line-height: 150% !important
+        h4
+          font-size: 110% !important
+          line-height: 160% !important

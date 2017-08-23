@@ -1,13 +1,13 @@
-<!DOCTYPE html><html><head><title>ブロック構文はいいぞ</title><meta charset="utf-8" content="sxarp" name="author" /><link href="css/reveal.css" rel="stylesheet" /><link href="css/theme/sky.css" id="theme" rel="stylesheet" /><link href="lib/css/zenburn.css" rel="stylesheet" /><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS_HTML" type="text/javascript"></script><script type="text/x-mathjax-config">MathJax.Hub.Config({
+<!DOCTYPE html><html><head><title>ブロック構文はいいぞ2017-08-23 20:10:45 +0900</title><meta charset="utf-8" content="sxarp" name="author" /><meta content="width=device-width initial-scale=1.0 maximum-scale=1.0 user-scalable=no" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable" /><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style" /></meta><link href="css/reveal.css" rel="stylesheet" /><link href="css/theme/sky.css" id="theme" rel="stylesheet" /><link href="lib/css/zenburn.css" rel="stylesheet" /><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS_HTML" type="text/javascript"></script><script type="text/x-mathjax-config">MathJax.Hub.Config({
 tex2jax: {
   inlineMath: [ ['$','$'], ["\\(","\\)"] ],
   displayMath: [ ['$$','$$'], ["\\[","\\]"] ]
   }
- });</script></head><body><div class="reveal"><div class="slides"><section><h3>お前誰よ(自己紹介)</h3><ul><li>名前はsxarpでｵﾅｼｬｽ</li><li>ネット上では匿名掲示板上で活動してたので最近まで名前が無かった…</li><li>twitterもやってなかった(この前始めた@_sxarp)</li><li>いつもは4chanという海外の画像掲示板にいます<ul><li>ちな、ごちうさすれによく張り付いてます(クッソどうでもいい情報)</li></ul></li></ul></section><section><h3>技術的興味/バックグラウンド</h3><ul><li>元はPythonばかり書いてました<ul><li>機械学習系の研究室にいたので</li></ul></li><li>Elixirに釣られて今の会社に</li><li>でもRailsはちゃんと使えるようになりたいので今はRubyでお仕事</li><li>最近Haskellを勉強中(H本で)<ul><li>そろそろmonadが何なのか分かりそう(願望)</li></ul></li></ul></section><section><h2>今日の発表の大まかな流れ</h2><p>ブロックを受け取る関数を自作すると便利だよという話をします</p><ul><li>ブロック構文の簡単な説明<ul><li>Rubyでの使い方と作り方</li></ul></li><li>ブロック構文/ブロックを受け取る関数とは何なのか?<ul><li>普通の関数との役割の違い</li><li>どんなときに使うのが良いか?</li></ul></li><li>仕事でブロックを受け取る関数を自作したらわりと捗った話</li></ul></section><section><h2>Pretty Code</h2><pre><code contenteditable>
+ });</script></head><body><div class="reveal"><div class="slides"><section><h3>お前誰よ(自己紹介)</h3><ul><li>名前はsxarpでｵﾅｼｬｽ</li><li>ネット上では匿名掲示板上で活動してたので最近まで名前が無かった…</li><li>twitterもやってなかった(この前始めた@_sxarp)</li><li>いつもは4chanという海外の画像掲示板にいます<ul><li>ちな、ごちうさすれによく張り付いてます(クッソどうでもいい情報)</li></ul></li></ul></section><section><h3>技術的興味/バックグラウンド</h3><ul><li>元はPythonばかり書いてました<ul><li>機械学習系の研究室にいたので</li></ul></li><li>Elixirに釣られて今の会社に</li><li>でもRailsはちゃんと使えるようになりたいので今はRubyでお仕事</li><li>最近Haskellを勉強中(H本で)<ul><li>そろそろmonadが何なのか分かりそう(願望)</li></ul></li></ul></section><section><h3>今日の発表の大まかな流れ</h3><h4>ブロックを受け取る関数を自作すると便利だよという話をします</h4><ul><li>ブロック構文の簡単な説明<ul><li>Rubyでの使い方と作り方</li></ul></li><li>ブロック構文/ブロックを受け取る関数とは何なのか?<ul><li>普通の関数との役割の違い</li><li>どんなときに使うのが良いか?</li></ul></li><li>仕事でブロックを受け取る関数を自作したらわりと捗った話</li></ul></section><section><h2>Pretty Code</h2><pre><code contenteditable>
 [1, 2, 3].map do |item|
   puts item
 end
-<code></pre></section><section><h2>てすとてすお</h2><p>aaaaaa</p></section></div></div><script src="lib/js/head.min.js"></script><script src="js/reveal.min.js"></script><script>Reveal.initialize({
+<code></pre></section><section><h2>てすとてすお</h2><p>aaaaaa</p></section></div></div><script src="lib/js/head.min.js"></script><script src="js/reveal.min.js"></script><style type="text/css">body{line-height:150%}</style><script>Reveal.initialize({
 controls: false,
 progress: true,
 history: true,
@@ -21,4 +21,4 @@ dependencies: [
 { src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
 { src: 'plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
 { src: 'plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
-]});</script></body></html>
+]});</script><style type="text/css">section{line-height:140% !important}section ul{font-size:90% !important;line-height:150% !important}section h4{font-size:110% !important;line-height:160% !important}</style></body></html>
