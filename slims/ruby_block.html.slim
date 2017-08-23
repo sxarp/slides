@@ -22,7 +22,14 @@ html
     div class="reveal"
       div class="slides"
         section
+          br
+          br
+          h2 ブロック構文はいいぞ〜
+          br
+          h3 目の前の問題の背後にある一般的な問題を解くと良いことがあるかも？
+        section
           h3 お前誰よ(自己紹介)
+          br
           ul
             li 名前はsxarpでｵﾅｼｬｽ
             li ネット上では匿名掲示板上で活動してたので最近まで名前が無かった…
@@ -33,6 +40,7 @@ html
                 li ちな、ごちうさすれによく張り付いてます(クッソどうでもいい情報)
         section
           h3 技術的興味/バックグラウンド
+          br
           ul
             li
               | 元はPythonばかり書いてました
@@ -46,6 +54,7 @@ html
                 li そろそろmonadが何なのか分かりそう(願望)
         section
           h3 今日の発表の大まかな流れ
+          br
           p ブロックを受け取る関数を自作すると便利だよという話をします
           ul
             li
@@ -53,15 +62,16 @@ html
               ul
                 li Rubyでの使い方/作り方
             li
-              | ブロック構文/ブロックを受け取る関数とは何なのか?
+              | ブロック構文/ブロックを受け取る関数について考察
               ul
-                li 普通の関数との役割の違い
+                li 普通の関数との違い
                 li どんなときに使うのが良いか?
             li 仕事でブロックを受け取る関数を自作したらわりと捗った話
           h4
           h4 スライド: https://sxarp.github.io/slides/ruby_block
         section
           h3 ブロック構文の簡単な説明(使い方)
+          br
           p
             | ブロック構文は普段からよく使ってるかと思います、例えばArray#eachとか:
           pre
@@ -71,6 +81,7 @@ html
                end
         section
           h3 ブロック構文の簡単な説明(作り方)
+          br
           p 
             | 逆にブロックを受け取るeachみたいなメソッドは以下のように作れます。
             | 引数の定義にProcオブジェクトを使うだけOKです。
@@ -85,14 +96,15 @@ html
                end
         section
           h3 で、ブロック構文って結局何なのさ？
+          br
           p なんの役に立つ？
           ul
             li 共通ロジックを取り出すことでDRYにできる
             ul
-              li 例えばArray#eachは配列の各要素に処理をするというロジックを抽出したもの
+              li 例えばArray#eachは配列の各要素に個別に処理をするというロジックを抽出したもの
               li eachを使えば各要素への処理だけ書けば良く、イタレーション部分のロジックは書かなくて良い
           h4
-          h4 ところで普通の関数とは何が違うのか？ 共通ロジックの抽出という目的は関数も同じだけれど...
+          h4 普通の関数とは何が違うのか？ 共通ロジックの抽出という目的は関数も同じだけれど...
         section
           h3 ブロックを受け取る関数と普通の関数との違い
           p 普通の関数とブロックを受け取る関数では、抽出するロジックの階層が異なります。
@@ -130,7 +142,7 @@ html
           pre
             code
               |def puts_x_plus_one(x)
-                  puts x+1
+                   puts x+1
                end
           p 上の階層を抽出するのがブロックを受け取る関数
           pre
@@ -138,19 +150,60 @@ html
               |def do_something_when_over_100(x,  &block)
                    block.call(x) if x > 100
                end
-                
-
-
         section
-          h2 Pretty Code
+          h3 上の階層を抽出すると何がうれしい？
+          br
+          ul
+            li
+              | コードの抽象度を高められる
+              ul
+                li 下の階層のロジックを切り替えることで色んな問題に適用できる
+                li 仕様の変更や追加に強い
+            li
+              | 目の前の問題に固有なロジックに集中できる
+              ul
+                li 共通ロジック(上の階層)を書かなくて良い
+                li 簡易的なDSLと呼べるかも
+        section
+          h3 最後に最近ブロック構文を使った話
+          p ２つの配列から条件にマッチしたペアを抽出していくというロジックをブロック構文として実装した。
+          h4 
+            a href='https://github.com/sxarp/matching_array/blob/master/matching_array.rb' コードはこんな感じです。
+          h4
+          p どんなふうに使った？
+          ul
+            li 目的としては２つのバラバラに管理されてたモデルを一対一に対応付けたい
+            li 具体的には、キャラクターのモデルと図鑑のページのモデルを論理的に紐付けたい(大嘘)
+        section
+          h3 対応ペアを抽出するコードの様子
+          p #matchというメソッドを使うことで、色んな条件でのペアの抽出が簡単にできる：
           pre
-            | <code contenteditable>
-              [1, 2, 3].map do |item|
-                puts item
-              end
+            code style="font-size: 80%; line-height: 100%;"
+              |#キャラクターとページが格納された配列
+               characters, pages = import_data
+               # 対応が付いたペアを逐一突っ込んでいく配列 
+               matched_pairs = []
+
+               matched_pairs.concat(characters.match(pages)  do  |char,  page|
+                   char.name  ==  page.title #キャラ名とページ名は大体おんなじ
+               end)
+               matched_pairs.concat(characters.match(pages)  do  |char,  page|
+                   #名前で対応付かないのは生成時期で対応
+                   char.created_at.month  ==  page.created_at.month
+               end)
+               matched_pairs.concat(characters.match(pages)  do  |char,  page|
+                   char.id == 50 && page.id == 100 #最後の手段でidで直接対応付け
+               end)
         section
-          h2 てすとてすお
-          p aaaaaa
+          h3 まとめ：ブロック構文はいいぞ
+          br
+          p ブロックを受け取る関数を使って、目の前の問題の背後にあるより一般的な問題を解いておくと、些細な仕様の変更や追加には余裕で対応できるコードが書けていいゾ～これ。
+        section
+          br
+          br
+          br
+          br
+          h2 おわり
     script src="lib/js/head.min.js"
     script src="js/reveal.min.js"
     javascript:
