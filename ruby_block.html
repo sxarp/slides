@@ -1,0 +1,25 @@
+<!DOCTYPE html><html><head><title>ブロック構文はいいぞ</title><meta charset="utf-8" content="sxarp" name="author" /><link href="css/reveal.css" rel="stylesheet" /><link href="css/theme/sky.css" id="theme" rel="stylesheet" /><link href="lib/css/zenburn.css" rel="stylesheet" /><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS_HTML" type="text/javascript"></script><script type="text/x-mathjax-config">MathJax.Hub.Config({
+tex2jax: {
+  inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+  displayMath: [ ['$$','$$'], ["\\[","\\]"] ]
+  }
+ });</script></head><body><div class="reveal"><div class="slides"><section><h3>お前誰よ(自己紹介)</h3><ul><li>名前はsxarpでｵﾅｼｬｽ</li><li>ネット上では匿名掲示板上で活動してたので最近まで名前が無かった…</li><li>twitterもやってなかった(この前始めた@_sxarp)</li><li>いつもは4chanという海外の画像掲示板にいます<ul><li>ちな、ごちうさすれによく張り付いてます(クッソどうでもいい情報)</li></ul></li></ul></section><section><h3>技術的興味/バックグラウンド</h3><ul><li>元はPythonばかり書いてました<ul><li>機械学習系の研究室にいたので</li></ul></li><li>Elixirに釣られて今の会社に</li><li>でもRailsはちゃんと使えるようになりたいので今はRailsでお仕事</li><li>最近Haskellを勉強中(H本で)<ul><li>そろそろmonadが何なのか分かりそう(願望)</li></ul></li></ul></section><section><h2>mathtest</h2><p>$\frac{a}{b}$
+$$ x = y  $$</p></section><section><h2>Pretty Code</h2><pre><code contenteditable>
+[1, 2, 3].map do |item|
+  puts item
+end
+<code></pre></section><section><h2>てすとてすお</h2><p>aaaaaa</p></section></div></div><script src="lib/js/head.min.js"></script><script src="js/reveal.min.js"></script><script>Reveal.initialize({
+controls: false,
+progress: true,
+history: true,
+theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+transition: Reveal.getQueryHash().transition || 'linear', // default/cube/page/concave/zoom/linear/none
+// Optional libraries used to extend on reveal.js
+dependencies: [
+{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+{ src: 'plugin/markdown/showdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+{ src: 'plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+{ src: 'plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
+]});</script></body></html>
