@@ -58,6 +58,8 @@ html
                 li 普通の関数との役割の違い
                 li どんなときに使うのが良いか?
             li 仕事でブロックを受け取る関数を自作したらわりと捗った話
+          h4
+          h4 スライド: https://sxarp.github.io/slides/ruby_block
         section
           h3 ブロック構文の簡単な説明(使い方)
           h4
@@ -69,10 +71,8 @@ html
               end
               <code>
         section
-          h3 ブロック構文の簡単な説明(使い方)
-          h4
-            | 逆にブロックを受け取るeachみたいなメソッドも簡単に作れます。
-            | 引数の定義にProcオブジェクトを使うだけOKです。
+          h3 ブロック構文の簡単な説明(作り方)
+          h4 逆にブロックを受け取るeachみたいなメソッドも簡単に作れます。 引数の定義にProcオブジェクトを使うだけOKです。
           pre
             | <code contenteditable>
               def each(&do_something_block)
@@ -113,14 +113,15 @@ html
       ]});
     sass:
       section
-        h4
-          text-transform: none !important
+        font-style: sans-serif !important
+        line-height: 140% !important
         pre
           font-size: 90% !important
-        line-height: 140% !important
         ul
           font-size: 90% !important
           line-height: 150% !important
         h4
           font-size: 110% !important
-          line-height: 160% !important
+          line-height: 150% !important
+          text-transform: none !important
+          font-family: inherit !important
