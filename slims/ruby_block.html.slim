@@ -84,6 +84,64 @@ html
                    end
                end
         section
+          h3 で、ブロック構文って結局何なのさ？
+          p なんの役に立つ？
+          ul
+            li 共通ロジックを取り出すことでDRYにできる
+            ul
+              li 例えばArray#eachは配列の各要素に処理をするというロジックを抽出したもの
+              li eachを使えば各要素への処理だけ書けば良く、イタレーション部分のロジックは書かなくて良い
+          h4
+          h4 ところで普通の関数とは何が違うのか？ 共通ロジックの抽出という目的は関数も同じだけれど...
+        section
+          h3 ブロックを受け取る関数と普通の関数との違い
+          p 普通の関数とブロックを受け取る関数では、抽出するロジックの階層が異なります。
+          p ここでいう階層とは以下のような入れ子構造のことです：
+          pre
+            code
+              |
+               上の階層のロジック {
+                     下の階層のロジック
+               }
+          h6
+          h4 上の階層のロジックによって下の階層のロジックが呼び出されます
+
+        section
+          h3 階層構造の具体例
+          p たとえば以下の例だと：
+          pre
+            code
+              |if x > 100
+                   puts x+1
+               end
+          p 上の階層のロジック:
+          pre
+            code
+              |if x > 100
+                   ....
+               end
+          p 下の階層のロジック:
+          pre
+            code
+              | puts x+1
+        section
+          h3 ブロックを受け取る関数と普通の関数との違い
+          p 下の階層を抽出するのが普通の関数
+          pre
+            code
+              |def puts_x_plus_one(x)
+                  puts x+1
+               end
+          p 上の階層を抽出するのがブロックを受け取る関数
+          pre
+            code
+              |def do_something_when_over_100(x,  &block)
+                   block.call(x) if x > 100
+               end
+                
+
+
+        section
           h2 Pretty Code
           pre
             | <code contenteditable>

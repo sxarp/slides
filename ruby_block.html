@@ -1,4 +1,4 @@
-<!DOCTYPE html><html><head><title>ブロック構文はいいぞ2017-08-23 23:13:14 +0900</title><meta charset="utf-8" content="sxarp" name="author" /><meta content="width=device-width initial-scale=1.0 maximum-scale=1.0 user-scalable=no" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable" /><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style" /></meta><link href="css/reveal.css" rel="stylesheet" /><link href="css/theme/sky.css" id="theme" rel="stylesheet" /><link href="lib/css/zenburn.css" rel="stylesheet" /><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS_HTML" type="text/javascript"></script><script type="text/x-mathjax-config">MathJax.Hub.Config({
+<!DOCTYPE html><html><head><title>ブロック構文はいいぞ2017-08-24 00:31:30 +0900</title><meta charset="utf-8" content="sxarp" name="author" /><meta content="width=device-width initial-scale=1.0 maximum-scale=1.0 user-scalable=no" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable" /><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style" /></meta><link href="css/reveal.css" rel="stylesheet" /><link href="css/theme/sky.css" id="theme" rel="stylesheet" /><link href="lib/css/zenburn.css" rel="stylesheet" /><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS_HTML" type="text/javascript"></script><script type="text/x-mathjax-config">MathJax.Hub.Config({
 tex2jax: {
   inlineMath: [ ['$','$'], ["\\(","\\)"] ],
   displayMath: [ ['$$','$$'], ["\\[","\\]"] ]
@@ -10,6 +10,16 @@ end</code></pre></section><section><h3>ブロック構文の簡単な説明(作�
        item = self[index]
        do_something_block.call(item)
     end
+end</code></pre></section><section><h3>で、ブロック構文って結局何なのさ？</h3><p>なんの役に立つ？</p><ul><li>共通ロジックを取り出すことでDRYにできる</li><ul><li>例えばArray#eachは配列の各要素に処理をするというロジックを抽出したもの</li><li>eachを使えば各要素への処理だけ書けば良く、イタレーション部分のロジックは書かなくて良い</li></ul></ul><h4></h4><h4>ところで普通の関数とは何が違うのか？ 共通ロジックの抽出という目的は関数も同じだけれど...</h4></section><section><h3>ブロックを受け取る関数と普通の関数との違い</h3><p>普通の関数とブロックを受け取る関数では、抽出するロジックの階層が異なります。</p><p>ここでいう階層とは以下のような入れ子構造のことです：</p><pre><code>上の階層のロジック {
+      下の階層のロジック
+}</code></pre><h6></h6><h4>上の階層のロジックによって下の階層のロジックが呼び出されます</h4></section><section><h3>階層構造の具体例</h3><p>たとえば以下の例だと：</p><pre><code>if x > 100
+    puts x+1
+end</code></pre><p>上の階層のロジック:</p><pre><code>if x > 100
+    ....
+end</code></pre><p>下の階層のロジック:</p><pre><code>puts x+1</code></pre></section><section><h3>ブロックを受け取る関数と普通の関数との違い</h3><p>下の階層を抽出するのが普通の関数</p><pre><code>def puts_x_plus_one(x)
+   puts x+1
+end</code></pre><p>上の階層を抽出するのがブロックを受け取る関数</p><pre><code>def do_something_when_over_100(x,  &block)
+    block.call(x) if x > 100
 end</code></pre></section><section><h2>Pretty Code</h2><pre><code contenteditable>
 [1, 2, 3].map do |item|
   puts item
