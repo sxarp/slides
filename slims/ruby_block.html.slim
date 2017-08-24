@@ -155,18 +155,18 @@ html
           br
           ul
             li
+              | 目の前の問題に固有なロジックに集中できる
+              ul
+                li 下の階層のロジックだけ書けば良い、共通ロジック(上の階層)を書かなくて良い
+                li 簡易的なDSLと呼べるかも
+            li
               | コードの抽象度を高められる
               ul
                 li 下の階層のロジックを切り替えることで色んな問題に適用できる
                 li 仕様の変更や追加に強い
-            li
-              | 目の前の問題に固有なロジックに集中できる
-              ul
-                li 共通ロジック(上の階層)を書かなくて良い
-                li 簡易的なDSLと呼べるかも
         section
           h3 最後に最近ブロック構文を使った話
-          p ２つの配列から条件にマッチしたペアを抽出していくというロジックをブロック構文として実装した。
+          p ２つの配列から条件にマッチしたペアを抽出していくという(上の階層の)ロジックをブロック構文として実装しました
           h4 
             a href='https://github.com/sxarp/matching_array/blob/master/matching_array.rb' コードはこんな感じです。
           h4
@@ -176,28 +176,33 @@ html
             li 具体的には、キャラクターのモデルと図鑑のページのモデルを論理的に紐付けたい(大嘘)
         section
           h3 対応ペアを抽出するコードの様子
-          p #matchというメソッドを使うことで、色んな条件でのペアの抽出が簡単にできる：
+          p MatchingArray#matchというメソッドを使うことで、色んな条件でのペアの抽出が簡単にできる：
           pre
             code style="font-size: 80%; line-height: 100%;"
-              |#キャラクターとページが格納された配列
-               characters, pages = import_data
-               # 対応が付いたペアを逐一突っ込んでいく配列 
-               matched_pairs = []
+              |
+               #キャラクターとページの入った配列からMatcingArrayを作る
+               characters =  MatchingArray.new(characters)
+               pages  = MatchingArray.new(pages)
+               matched_pairs = [] # 対応が付いたペアを逐一突っ込んでいく配列 
 
                matched_pairs.concat(characters.match(pages)  do  |char,  page|
-                   char.name  ==  page.title #キャラ名とページ名は大体おんなじ
+                   char.name  ==  page.title # キャラ名とページ名が一致してたらペア
                end)
                matched_pairs.concat(characters.match(pages)  do  |char,  page|
-                   #名前で対応付かないのは生成時期で対応
+                   #名前で対応付かないのは生成時期を見て対応付け
                    char.created_at.month  ==  page.created_at.month
                end)
                matched_pairs.concat(characters.match(pages)  do  |char,  page|
                    char.id == 50 && page.id == 100 #最後の手段でidで直接対応付け
                end)
         section
+          h3 MatchingArrayを作ると何が良かった？
+          br
+          p 何らかの条件でペアを抽出するという汎用的な(ブロックを受け取る)関数を最初に作った結果、どんな抽出条件でも後から簡単に追加できた
+        section
           h3 まとめ：ブロック構文はいいぞ
           br
-          p ブロックを受け取る関数を使って、目の前の問題の背後にあるより一般的な問題を解いておくと、些細な仕様の変更や追加には余裕で対応できるコードが書けていいゾ～これ。
+          p ブロックを受け取る関数を使って、目の前の問題の背後にあるより一般的な問題を解いておくと、些細な仕様の変更や追加に余裕で対応できるコードが書けていいゾ～これ。
         section
           br
           br
@@ -236,6 +241,9 @@ html
           line-height: 150% !important
           text-transform: none !important
           font-family: inherit !important
+        h3
+          font-family: inherit !important
+          text-transform: none !important
         p
           font-size: 108% !important
           text-align: left !important
