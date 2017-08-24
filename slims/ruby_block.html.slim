@@ -25,37 +25,44 @@ html
           br
           br
           h2 ブロック構文はいいぞ〜
-          br
-          h3 目の前の問題の背後にある一般的な問題を解くと良いって話
+          h4 ブロックを受け取る関数を使って一般化された問題を解いておくと捗るかもな話@Meguro.rb
         section
           h3 お前誰よ(自己紹介)
           br
           ul
-            li 名前はsxarpでｵﾅｼｬｽ
-            li ネット上では匿名掲示板上で活動してたので最近まで名前が無かった…
-            li twitterもやってなかった(最近始めた@_sxarp)
             li
-              | いつもは4chanという海外の画像掲示板にいます
+              | 名前と連絡先
               ul
+                li 名前はsxarpでｵﾅｼｬｽ
+                li 最近始めたﾂｲｯﾀｰ@_sxarp
+            li
+              | 趣味とか
+              ul
+                li いつもは4chanという海外の画像掲示板にいます
                 li ちな、ごちうさすれによく張り付いてます(クッソどうでもいい情報)
         section
           h3 技術的興味/バックグラウンド
           br
           ul
             li
-              | 元はPythonばかり書いてました
+              | 前までどんなことやってたか
               ul
+                li 元はPythonばかり書いてました
                 li 機械学習系の研究室にいたので
-            li Elixirに釣られて今の会社に
-            li でもRailsはちゃんと使えるようになりたいので今はRubyでお仕事
             li
-              | 最近Haskellを勉強中(某Hな本で)
+              | 今どんなことやってるか
               ul
+                li Elixirに釣られて今の会社にジョイン
+                li でもRailsはちゃんとマスターしたいので今はRuby書いてます
+            li
+              | 最近のハマってること
+              ul
+                li 某Hな本でHaskellを勉強中
                 li そろそろmonadが何なのか分かりそう(願望)
         section
           h3 今日の発表の大まかな流れ
           br
-          p ブロックを受け取る関数を自作すると便利だよという話をします
+          p ブロックを受け取る関数を作ったり使ったりすると便利だよという話をします
           ul
             li
               | ブロック構文の簡単な説明
@@ -65,12 +72,12 @@ html
               | ブロック構文/ブロックを受け取る関数について考察
               ul
                 li 普通の関数との違い
-                li どんなときに使うのが良いか?
+                li どんなときに使う/作るのが良いか?
             li 仕事でブロックを受け取る関数を自作したらわりと捗った話
           h4
           h4 スライド: https://sxarp.github.io/slides/ruby_block
         section
-          h3 ブロック構文の簡単な説明(使い方)
+          h3 ブロック構文とは
           br
           p
             | ブロック構文は普段からよく使ってるかと思います、例えばArray#eachとか:
@@ -80,7 +87,7 @@ html
                   puts item
                end
         section
-          h3 ブロック構文の簡単な説明(作り方)
+          h3 ブロック構文の作り方
           br
           p 
             | 逆にブロックを受け取るeachみたいなメソッドは以下のように作れます。
@@ -236,6 +243,9 @@ html
         ul
           font-size: 90% !important
           line-height: 150% !important
+          text-align: left !important
+          li
+            text-align: left !important
         h4
           font-size: 110% !important
           line-height: 150% !important
