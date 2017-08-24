@@ -28,7 +28,7 @@ end</code></pre><p>名前でダメなやつは時期で対応付け:</p><pre><co
     same_month(chara.created_at,  page.created_at)
 end</code></pre><p>それでもダメなやつはidを直接指定して対応付け:</p><pre><code>pairs  =  characters.match(pages)  do  |chara,  page|
     chara.id == 50 && page.id == 100
-end</code></pre></section><section><h3>#matchを使うと何が良かった？</h3><br /><p>何らかの条件でペアを抽出するという汎用的な(ブロックを受け取る)関数を作った結果、どんな対応条件でも後から簡単に試したり追加したりできた</p><br /><p>未確定な/変動しうる仕様をうまくカバーできる一般的な問題を見つけて解いた結果</p></section><section><h3>まとめ：ブロック構文はいいぞ</h3><br /><p>ブロックを受け取る関数を使って、良い感じに一般的な問題を解いておくと、些細な仕様の変更や追加に余裕で対応できるコードが書けていいゾ～これ</p></section><section><br /><br /><br /><br /><h2>おわり</h2><br /></section></div></div><script src="lib/js/head.min.js"></script><script src="js/reveal.min.js"></script><script>Reveal.initialize({
+end</code></pre></section><section><h3>#matchを使うと何が良かった？</h3><br /><p>何らかの条件でペアを抽出するという汎用的な(ブロックを受け取る)関数を作った結果、どんな対応条件でも後から簡単に試したり追加したりできた</p><br /><p>未確定な/変動しうる仕様をうまくカバーできる一般的な問題を見つけて解いた結果</p></section><section><h3>まとめ：ブロック構文はいいぞ</h3><br /><p>ブロックを受け取る関数を使って、良い感じに一般的な問題を解いておくと、些細な仕様の変更や追加には余裕で対応できるコードが書けていいゾ～これ</p></section><section><br /><br /><br /><br /><h2>おわり</h2><br /></section></div></div><script src="lib/js/head.min.js"></script><script src="js/reveal.min.js"></script><script>Reveal.initialize({
 controls: false,
 progress: true,
 history: true,
