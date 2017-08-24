@@ -25,6 +25,7 @@ html
           br
           br
           h2 ブロック構文はいいぞ〜
+          br
           h4 ブロックを受け取る関数を使って一般化された問題を解いておくと捗るかもな話@Meguro.rb
         section
           h3 お前誰よ(自己紹介)
@@ -63,6 +64,7 @@ html
           h3 今日の発表の大まかな流れ
           br
           p ブロックを受け取る関数を作ったり使ったりすると便利だよという話をします
+          h5
           ul
             li
               | ブロック構文の簡単な説明
@@ -111,10 +113,10 @@ html
               li 例えばArray#eachは配列の各要素に個別に処理をするというロジックを抽出したもの
               li eachを使えば各要素への処理だけ書けば良く、イタレーション部分のロジックは書かなくて良い
           h4
-          h4 普通の関数とは何が違うのか？ 共通ロジックの抽出という目的は関数も同じだけれど...
+          h4 では、普通の関数とは何が違うのか？ 共通ロジックの抽出という目的は関数も同じだけれど...
         section
           h3 ブロックを受け取る関数と普通の関数との違い
-          p 普通の関数とブロックを受け取る関数では、抽出するロジックの階層が異なります。
+          p 違いとしては、普通の関数とブロックを受け取る関数では、抽出するロジックの階層が異なります
           p ここでいう階層とは以下のような入れ子構造のことです：
           pre
             code
@@ -123,7 +125,7 @@ html
                      下の階層のロジック
                }
           h6
-          h4 上の階層のロジックによって下の階層のロジックが呼び出されます
+          h4 上の階層のロジックによって下の階層のロジックが呼び出される関係にあります
 
         section
           h3 階層構造の具体例
@@ -133,13 +135,13 @@ html
               |if x > 100
                    puts x+1
                end
-          p 上の階層のロジック:
+          p 上の階層のロジックは:
           pre
             code
               |if x > 100
                    ....
                end
-          p 下の階層のロジック:
+          p 下の階層のロジックは:
           pre
             code
               | puts x+1
@@ -164,7 +166,7 @@ html
             li
               | 目の前の問題に固有なロジックに集中できる
               ul
-                li 下の階層のロジックだけ書けば良い、共通ロジック(上の階層)を書かなくて良い
+                li 下の階層のロジックだけ書けばよく、共通ロジック(上の階層)を書かなくてよい
                 li 簡易的なDSLと呼べるかも
             li
               | コードの抽象度を高められる
@@ -172,50 +174,70 @@ html
                 li 下の階層のロジックを切り替えることで色んな問題に適用できる
                 li 仕様の変更や追加に強い
         section
-          h3 最後に最近ブロック構文を使った話
-          p ２つの配列から条件にマッチしたペアを抽出していくという(上の階層の)ロジックをブロック構文として実装しました
-          h4 
-            a href='https://github.com/sxarp/matching_array/blob/master/matching_array.rb' コードはこんな感じです。
-          h4
-          p どんなふうに使った？
+          h3 最近ブロック構文を使った話
+          p やりたいこと
           ul
-            li 目的としては２つのバラバラに管理されてたモデルを一対一に対応付けたい
-            li 具体的には、キャラクターのモデルと図鑑のページのモデルを論理的に紐付けたい(大嘘)
-        section
-          h3 対応ペアを抽出するコードの様子
-          p MatchingArray#matchというメソッドを使うことで、色んな条件でのペアの抽出が簡単にできる：
-          pre
-            code style="font-size: 80%; line-height: 100%;"
-              |
-               #キャラクターとページの入った配列からMatcingArrayを作る
-               characters =  MatchingArray.new(characters)
-               pages  = MatchingArray.new(pages)
-               matched_pairs = [] # 対応が付いたペアを逐一突っ込んでいく配列 
-
-               matched_pairs.concat(characters.match(pages)  do  |char,  page|
-                   char.name  ==  page.title # キャラ名とページ名が一致してたらペア
-               end)
-               matched_pairs.concat(characters.match(pages)  do  |char,  page|
-                   #名前で対応付かないのは生成時期を見て対応付け
-                   char.created_at.month  ==  page.created_at.month
-               end)
-               matched_pairs.concat(characters.match(pages)  do  |char,  page|
-                   char.id == 50 && page.id == 100 #最後の手段でidで直接対応付け
-               end)
-        section
-          h3 MatchingArrayを作ると何が良かった？
+            li 目的としては２つのバラバラに管理されていたモデルを一対一に対応付けたい
+            li 具体的には、キャラクターのモデルと図鑑のページのモデルを論理的に紐付けたい
           br
-          p 何らかの条件でペアを抽出するという汎用的な(ブロックを受け取る)関数を最初に作った結果、どんな抽出条件でも後から簡単に追加できた
+          p 要件
+          ul
+            li できるだけ自動化したい
+            li そのために<b>色んな条件</b>：名前や生成された時期等で対応ペアを抽出したい
+          h4 色んな条件で？ $\rightarrow$ ブロック構文が使えそう
+        section
+          h3 対応条件をブロックで渡せる関数
+          h4 
+          p ２つの配列から、ブロックで渡した条件で対応ペアを抽出できるメソッド(#match)を作りました
+          p 渡されたブロックがtruthyな値を返すとき、対応ペアとなります:
+          pre
+            code
+              |pairs  =  ours.match(theirs) do |our_item, their_item|
+                   specified_condition(our_item, their_item)
+               end
+          p なお、続けていくつも条件を適用したいので、マッチしたアイテムは逐次にpopしていく仕様です
+          h4
+            a href='https://github.com/sxarp/matching_array/blob/master/matching_array.rb' 実装コードはこんな感じです
+        section
+          h3 実際にどんなふうに使ったか
+          p まずは名前で対応付け:
+          pre
+            code
+              |
+               pairs  =  characters.match(pages)  do  |chara,  page|
+                   chara.name  ==  page.title
+               end
+          p 名前でダメなやつは時期で対応付け:
+          pre
+            code
+              |
+               pairs  =  characters.match(pages)  do  |chara,  page|
+                   same_month(chara.created_at,  page.created_at)
+               end
+          p それでもダメなやつはidを直接指定して対応付け:
+          pre
+            code
+              |
+               pairs  =  characters.match(pages)  do  |chara,  page|
+                   chara.id == 50 && page.id == 100
+               end
+        section
+          h3 #matchを使うと何が良かった？
+          br
+          p 何らかの条件でペアを抽出するという汎用的な(ブロックを受け取る)関数を作った結果、どんな対応条件でも後から簡単に試したり追加したりできた
+          br
+          p 未確定な/変動しうる仕様をうまくカバーできる一般的な問題を見つけて解いた結果
         section
           h3 まとめ：ブロック構文はいいぞ
           br
-          p ブロックを受け取る関数を使って、目の前の問題の背後にあるより一般的な問題を解いておくと、些細な仕様の変更や追加に余裕で対応できるコードが書けていいゾ～これ。
+          p ブロックを受け取る関数を使って、良い感じに一般的な問題を解いておくと、些細な仕様の変更や追加に余裕で対応できるコードが書けていいゾ～これ
         section
           br
           br
           br
           br
           h2 おわり
+          br
     script src="lib/js/head.min.js"
     script src="js/reveal.min.js"
     javascript:

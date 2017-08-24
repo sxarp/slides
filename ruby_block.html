@@ -3,38 +3,32 @@ tex2jax: {
   inlineMath: [ ['$','$'], ["\\(","\\)"] ],
   displayMath: [ ['$$','$$'], ["\\[","\\]"] ]
   }
- });</script></head><body><div class="reveal"><div class="slides"><section><br /><br /><h2>ブロック構文はいいぞ〜</h2><h4>ブロックを受け取る関数を使って一般化された問題を解いておくと捗るかもな話@Meguro.rb</h4></section><section><h3>お前誰よ(自己紹介)</h3><br /><ul><li>名前と連絡先<ul><li>名前はsxarpでｵﾅｼｬｽ</li><li>最近始めたﾂｲｯﾀｰ@_sxarp</li></ul></li><li>趣味とか<ul><li>いつもは4chanという海外の画像掲示板にいます</li><li>ちな、ごちうさすれによく張り付いてます(クッソどうでもいい情報)</li></ul></li></ul></section><section><h3>技術的興味/バックグラウンド</h3><br /><ul><li>前までどんなことやってたか<ul><li>元はPythonばかり書いてました</li><li>機械学習系の研究室にいたので</li></ul></li><li>今どんなことやってるか<ul><li>Elixirに釣られて今の会社にジョイン</li><li>でもRailsはちゃんとマスターしたいので今はRuby書いてます</li></ul></li><li>最近のハマってること<ul><li>某Hな本でHaskellを勉強中</li><li>そろそろmonadが何なのか分かりそう(願望)</li></ul></li></ul></section><section><h3>今日の発表の大まかな流れ</h3><br /><p>ブロックを受け取る関数を作ったり使ったりすると便利だよという話をします</p><ul><li>ブロック構文の簡単な説明<ul><li>Rubyでの使い方/作り方</li></ul></li><li>ブロック構文/ブロックを受け取る関数について考察<ul><li>普通の関数との違い</li><li>どんなときに使う/作るのが良いか?</li></ul></li><li>仕事でブロックを受け取る関数を自作したらわりと捗った話</li></ul><h4></h4><h4>スライド: https://sxarp.github.io/slides/ruby_block</h4></section><section><h3>ブロック構文とは</h3><br /><p>ブロック構文は普段からよく使ってるかと思います、例えばArray#eachとか:</p><pre><code>[1, 2, 3].each do |item|
+ });</script></head><body><div class="reveal"><div class="slides"><section><br /><br /><h2>ブロック構文はいいぞ〜</h2><br /><h4>ブロックを受け取る関数を使って一般化された問題を解いておくと捗るかもな話@Meguro.rb</h4></section><section><h3>お前誰よ(自己紹介)</h3><br /><ul><li>名前と連絡先<ul><li>名前はsxarpでｵﾅｼｬｽ</li><li>最近始めたﾂｲｯﾀｰ@_sxarp</li></ul></li><li>趣味とか<ul><li>いつもは4chanという海外の画像掲示板にいます</li><li>ちな、ごちうさすれによく張り付いてます(クッソどうでもいい情報)</li></ul></li></ul></section><section><h3>技術的興味/バックグラウンド</h3><br /><ul><li>前までどんなことやってたか<ul><li>元はPythonばかり書いてました</li><li>機械学習系の研究室にいたので</li></ul></li><li>今どんなことやってるか<ul><li>Elixirに釣られて今の会社にジョイン</li><li>でもRailsはちゃんとマスターしたいので今はRuby書いてます</li></ul></li><li>最近のハマってること<ul><li>某Hな本でHaskellを勉強中</li><li>そろそろmonadが何なのか分かりそう(願望)</li></ul></li></ul></section><section><h3>今日の発表の大まかな流れ</h3><br /><p>ブロックを受け取る関数を作ったり使ったりすると便利だよという話をします</p><h5></h5><ul><li>ブロック構文の簡単な説明<ul><li>Rubyでの使い方/作り方</li></ul></li><li>ブロック構文/ブロックを受け取る関数について考察<ul><li>普通の関数との違い</li><li>どんなときに使う/作るのが良いか?</li></ul></li><li>仕事でブロックを受け取る関数を自作したらわりと捗った話</li></ul><h4></h4><h4>スライド: https://sxarp.github.io/slides/ruby_block</h4></section><section><h3>ブロック構文とは</h3><br /><p>ブロック構文は普段からよく使ってるかと思います、例えばArray#eachとか:</p><pre><code>[1, 2, 3].each do |item|
    puts item
 end</code></pre></section><section><h3>ブロック構文の作り方</h3><br /><p>逆にブロックを受け取るeachみたいなメソッドは以下のように作れます。引数の定義にProcオブジェクトを使うだけOKです。</p><pre><code>def each(&do_something_block)
     for index in 0..(self.length)
        item = self[index]
        do_something_block.call(item)
     end
-end</code></pre></section><section><h3>で、ブロック構文って結局何なのさ？</h3><br /><p>なんの役に立つ？</p><ul><li>共通ロジックを取り出すことでDRYにできる</li><ul><li>例えばArray#eachは配列の各要素に個別に処理をするというロジックを抽出したもの</li><li>eachを使えば各要素への処理だけ書けば良く、イタレーション部分のロジックは書かなくて良い</li></ul></ul><h4></h4><h4>普通の関数とは何が違うのか？ 共通ロジックの抽出という目的は関数も同じだけれど...</h4></section><section><h3>ブロックを受け取る関数と普通の関数との違い</h3><p>普通の関数とブロックを受け取る関数では、抽出するロジックの階層が異なります。</p><p>ここでいう階層とは以下のような入れ子構造のことです：</p><pre><code>上の階層のロジック {
+end</code></pre></section><section><h3>で、ブロック構文って結局何なのさ？</h3><br /><p>なんの役に立つ？</p><ul><li>共通ロジックを取り出すことでDRYにできる</li><ul><li>例えばArray#eachは配列の各要素に個別に処理をするというロジックを抽出したもの</li><li>eachを使えば各要素への処理だけ書けば良く、イタレーション部分のロジックは書かなくて良い</li></ul></ul><h4></h4><h4>では、普通の関数とは何が違うのか？ 共通ロジックの抽出という目的は関数も同じだけれど...</h4></section><section><h3>ブロックを受け取る関数と普通の関数との違い</h3><p>違いとしては、普通の関数とブロックを受け取る関数では、抽出するロジックの階層が異なります</p><p>ここでいう階層とは以下のような入れ子構造のことです：</p><pre><code>上の階層のロジック {
       下の階層のロジック
-}</code></pre><h6></h6><h4>上の階層のロジックによって下の階層のロジックが呼び出されます</h4></section><section><h3>階層構造の具体例</h3><p>たとえば以下の例だと：</p><pre><code>if x > 100
+}</code></pre><h6></h6><h4>上の階層のロジックによって下の階層のロジックが呼び出される関係にあります</h4></section><section><h3>階層構造の具体例</h3><p>たとえば以下の例だと：</p><pre><code>if x > 100
     puts x+1
-end</code></pre><p>上の階層のロジック:</p><pre><code>if x > 100
+end</code></pre><p>上の階層のロジックは:</p><pre><code>if x > 100
     ....
-end</code></pre><p>下の階層のロジック:</p><pre><code>puts x+1</code></pre></section><section><h3>ブロックを受け取る関数と普通の関数との違い</h3><p>下の階層を抽出するのが普通の関数</p><pre><code>def puts_x_plus_one(x)
+end</code></pre><p>下の階層のロジックは:</p><pre><code>puts x+1</code></pre></section><section><h3>ブロックを受け取る関数と普通の関数との違い</h3><p>下の階層を抽出するのが普通の関数</p><pre><code>def puts_x_plus_one(x)
     puts x+1
 end</code></pre><p>上の階層を抽出するのがブロックを受け取る関数</p><pre><code>def do_something_when_over_100(x,  &block)
     block.call(x) if x > 100
-end</code></pre></section><section><h3>上の階層を抽出すると何がうれしい？</h3><br /><ul><li>目の前の問題に固有なロジックに集中できる<ul><li>下の階層のロジックだけ書けば良い、共通ロジック(上の階層)を書かなくて良い</li><li>簡易的なDSLと呼べるかも</li></ul></li><li>コードの抽象度を高められる<ul><li>下の階層のロジックを切り替えることで色んな問題に適用できる</li><li>仕様の変更や追加に強い</li></ul></li></ul></section><section><h3>最後に最近ブロック構文を使った話</h3><p>２つの配列から条件にマッチしたペアを抽出していくという(上の階層の)ロジックをブロック構文として実装しました</p><h4><a href="https://github.com/sxarp/matching_array/blob/master/matching_array.rb">コードはこんな感じです。</a></h4><h4></h4><p>どんなふうに使った？</p><ul><li>目的としては２つのバラバラに管理されてたモデルを一対一に対応付けたい</li><li>具体的には、キャラクターのモデルと図鑑のページのモデルを論理的に紐付けたい(大嘘)</li></ul></section><section><h3>対応ペアを抽出するコードの様子</h3><p>MatchingArray#matchというメソッドを使うことで、色んな条件でのペアの抽出が簡単にできる：</p><pre><code style="font-size: 80%; line-height: 100%;">#キャラクターとページの入った配列からMatcingArrayを作る
-characters =  MatchingArray.new(characters)
-pages  = MatchingArray.new(pages)
-matched_pairs = [] # 対応が付いたペアを逐一突っ込んでいく配列 
-
-matched_pairs.concat(characters.match(pages)  do  |char,  page|
-    char.name  ==  page.title # キャラ名とページ名が一致してたらペア
-end)
-matched_pairs.concat(characters.match(pages)  do  |char,  page|
-    #名前で対応付かないのは生成時期を見て対応付け
-    char.created_at.month  ==  page.created_at.month
-end)
-matched_pairs.concat(characters.match(pages)  do  |char,  page|
-    char.id == 50 && page.id == 100 #最後の手段でidで直接対応付け
-end)</code></pre></section><section><h3>MatchingArrayを作ると何が良かった？</h3><br /><p>何らかの条件でペアを抽出するという汎用的な(ブロックを受け取る)関数を最初に作った結果、どんな抽出条件でも後から簡単に追加できた</p></section><section><h3>まとめ：ブロック構文はいいぞ</h3><br /><p>ブロックを受け取る関数を使って、目の前の問題の背後にあるより一般的な問題を解いておくと、些細な仕様の変更や追加に余裕で対応できるコードが書けていいゾ～これ。</p></section><section><br /><br /><br /><br /><h2>おわり</h2></section></div></div><script src="lib/js/head.min.js"></script><script src="js/reveal.min.js"></script><script>Reveal.initialize({
+end</code></pre></section><section><h3>上の階層を抽出すると何がうれしい？</h3><br /><ul><li>目の前の問題に固有なロジックに集中できる<ul><li>下の階層のロジックだけ書けばよく、共通ロジック(上の階層)を書かなくてよい</li><li>簡易的なDSLと呼べるかも</li></ul></li><li>コードの抽象度を高められる<ul><li>下の階層のロジックを切り替えることで色んな問題に適用できる</li><li>仕様の変更や追加に強い</li></ul></li></ul></section><section><h3>最近ブロック構文を使った話</h3><p>やりたいこと</p><ul><li>目的としては２つのバラバラに管理されていたモデルを一対一に対応付けたい</li><li>具体的には、キャラクターのモデルと図鑑のページのモデルを論理的に紐付けたい</li></ul><br /><p>要件</p><ul><li>できるだけ自動化したい</li><li>そのために<b>色んな条件</b>：名前や生成された時期等で対応ペアを抽出したい</li></ul><h4>色んな条件で？ $\rightarrow$ ブロック構文が使えそう</h4></section><section><h3>対応条件をブロックで渡せる関数</h3><h4></h4><p>２つの配列から、ブロックで渡した条件で対応ペアを抽出できるメソッド(#match)を作りました</p><p>渡されたブロックがtruthyな値を返すとき、対応ペアとなります:</p><pre><code>pairs  =  ours.match(theirs) do |our_item, their_item|
+    specified_condition(our_item, their_item)
+end</code></pre><p>なお、続けていくつも条件を適用したいので、マッチしたアイテムは逐次にpopしていく仕様です</p><h4><a href="https://github.com/sxarp/matching_array/blob/master/matching_array.rb">実装コードはこんな感じです</a></h4></section><section><h3>実際にどんなふうに使ったか</h3><p>まずは名前で対応付け:</p><pre><code>pairs  =  characters.match(pages)  do  |chara,  page|
+    chara.name  ==  page.title
+end</code></pre><p>名前でダメなやつは時期で対応付け:</p><pre><code>pairs  =  characters.match(pages)  do  |chara,  page|
+    same_month(chara.created_at,  page.created_at)
+end</code></pre><p>それでもダメなやつはidを直接指定して対応付け:</p><pre><code>pairs  =  characters.match(pages)  do  |chara,  page|
+    chara.id == 50 && page.id == 100
+end</code></pre></section><section><h3>#matchを使うと何が良かった？</h3><br /><p>何らかの条件でペアを抽出するという汎用的な(ブロックを受け取る)関数を作った結果、どんな対応条件でも後から簡単に試したり追加したりできた</p><br /><p>未確定な/変動しうる仕様をうまくカバーできる一般的な問題を見つけて解いた結果</p></section><section><h3>まとめ：ブロック構文はいいぞ</h3><br /><p>ブロックを受け取る関数を使って、良い感じに一般的な問題を解いておくと、些細な仕様の変更や追加に余裕で対応できるコードが書けていいゾ～これ</p></section><section><br /><br /><br /><br /><h2>おわり</h2><br /></section></div></div><script src="lib/js/head.min.js"></script><script src="js/reveal.min.js"></script><script>Reveal.initialize({
 controls: false,
 progress: true,
 history: true,
